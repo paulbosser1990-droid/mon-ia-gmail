@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { lireEmailsNonLus } from '@/lib/gmail'
 import { analyserEmail } from '@/lib/gemini'
-import { sauvegarderEmail } from '@/lib/supabase'
+import { sauvegarderEmail, sauvegarderTache, getEmails } from '@/lib/supabase'
 
 export async function POST(request) {
   try {
@@ -27,12 +27,19 @@ export async function POST(request) {
           priorite: 'normal',
           categorie: 'autre',
           resume: 'Analyse impossible pour le moment',
-          reponseSuggeree: ''
+          reponseSuggeree: '',
+          repondu: false
         })
       }
     }
 
-    return NextResponse.json({ success: true, emails: emailsAnalyses })
+    const tousLesEmails = await getEmails()
+    const emailsAvecStatut = emailsAnalyses.map(e => {
+      const enBase = tousLesEmails.find(b => b.gmail_id === e.id)
+      return { ...e, repondu: enBase?.repondu || false }
+    })
+
+    return NextResponse.json({ success: true, emails: emailsAvecStatut })
   } catch (error) {
     console.error('ERREUR:', error.message)
     return NextResponse.json({ error: error.message }, { status: 500 })
