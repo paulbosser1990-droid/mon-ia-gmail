@@ -13,7 +13,7 @@ export async function POST(request) {
 
     const emailsAnalyses = []
 
-    for (const email of emailsBruts.slice(0, 3)) {
+    for (const email of emailsBruts.slice(0, 10)) {
       try {
         const analyse = await analyserEmail(email)
         const emailComplet = { ...email, ...analyse }
