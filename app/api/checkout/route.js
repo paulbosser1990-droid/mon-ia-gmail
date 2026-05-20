@@ -22,13 +22,14 @@ export async function POST(request) {
         quantity: 1
       }],
       mode: 'subscription',
-      customer_email: email,
-      success_url: process.env.NEXTAUTH_URL + '?paiement=succes',
-      cancel_url: process.env.NEXTAUTH_URL + '?paiement=annule'
+      customer_email: email || undefined,
+      success_url: process.env.NEXTAUTH_URL + '/?paiement=succes',
+      cancel_url: process.env.NEXTAUTH_URL + '/?paiement=annule'
     })
     
     return NextResponse.json({ url: session.url })
   } catch (error) {
+    console.error('Stripe error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
