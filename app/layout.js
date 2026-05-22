@@ -1,1 +1,1 @@
-export default function RootLayout({ children }) { return (<html lang='fr'><body>{children}</body></html>) }
+﻿export default function RootLayout({ children }) { return (<html lang='fr' style={{margin:0,padding:0,width:'100%'}}><body style={{margin:0,padding:0,width:'100%',overflowX:'hidden'}}>{children}</body></html>) }
